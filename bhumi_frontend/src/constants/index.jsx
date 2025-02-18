@@ -35,26 +35,7 @@ export const navbarLinks = [
             {
                 label: "View Product Category",
                 icon: Trash,
-                path: "/delete-product",
-            },
-        ],
-    }, {
-        title: "Product Type",
-        links: [
-            {
-                label: "Add Product Type",
-                icon: PackagePlus,
-                path: "/add-type",
-            },
-            {
-                label: "Update Product Type",
-                icon: Edit,
-                path: "/update-product",
-            },
-            {
-                label: "Delete Product Type",
-                icon: Trash,
-                path: "/delete-product",
+                path: "/view-category",
             },
         ],
     },
@@ -67,15 +48,11 @@ export const navbarLinks = [
                 path: "/add-product",
             },
             {
-                label: "Update product",
+                label: "View product",
                 icon: Edit,
-                path: "/update-product",
+                path: "/view-product",
             },
-            {
-                label: "Delete product",
-                icon: Trash,
-                path: "/delete-product",
-            },
+
         ],
     },
     {
