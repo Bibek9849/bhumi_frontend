@@ -31,7 +31,8 @@ const Product = () => {
                         </figure>
                         <div className="card-body">
                             <h2 className="card-title">{product.name}</h2>
-                            <p>{product.description || "No description available"}</p>
+                            <p>{product.product_categoryId.description
+                                || "No description available"}</p>
                         </div>
                     </a>
                 ))}
