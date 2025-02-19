@@ -39,20 +39,20 @@ const ProductDetails = () => {
                     <div className="flex flex-col md:flex-row items-center">
                         {/* Product Image */}
                         <div className="w-full md:w-1/2 p-4">
-                            <img src={product.image || "https://via.placeholder.com/150"} alt={product.name} className="w-full h-auto rounded-lg shadow-md" />
+                            <img src={product.image || "https://via.placeholder.com/150"} alt={product.data.image} className="w-full h-auto rounded-lg shadow-md" />
                         </div>
 
                         {/* Product Info */}
                         <div className="w-full md:w-1/2 p-4">
-                            <h1 className="text-3xl font-semibold text-gray-800">{product.name}</h1>
+                            <h1 className="text-3xl font-semibold text-gray-800">{product.data.name}</h1>
                             <div className="flex items-center mt-2">
                                 <span className="bg-green-600 text-white px-2 py-1 rounded-md text-sm">{product.rating} ★</span>
-                                <span className="ml-3 text-gray-600">Category: <strong>{product.product_categoryId.name}</strong></span>
+                                <span className="ml-3 text-gray-600">Category: <strong>{product.data.product_categoryId.name}</strong></span>
                             </div>
 
                             {/* Price Section */}
                             <div className="mt-3">
-                                <span className="text-2xl font-bold text-gray-900">Rs {product.price}</span>
+                                <span className="text-2xl font-bold text-gray-900">Rs {product.data.price}</span>
 
                             </div>
 
@@ -79,17 +79,17 @@ const ProductDetails = () => {
                     {/* Product Description */}
                     <div className="w-full md:w-1/2 p-4">
                         <h2 className="text-xl font-semibold text-gray-800">Product Description</h2>
-                        <p className="text-gray-600 mt-2">{product.description}</p>
+                        <p className="text-gray-600 mt-2">{product.data.description}</p>
                     </div>
 
                     {/* Product Details */}
                     <div className="w-full md:w-1/2 p-4">
                         <h2 className="text-xl font-semibold text-gray-800">Product Details</h2>
                         <ul className="text-gray-600 mt-2">
-                            <li><strong>Brand:</strong> {product.brand}</li>
-                            <li><strong>Weight:</strong> {product.weight}</li>
+                            <li><strong>Price Per K.G:</strong> {product.data.price}</li>
+                            {/* <li><strong>Weight:</strong> {product.weight}</li>
                             <li><strong>Form:</strong> {product.form}</li>
-                            <li><strong>Volume:</strong> {product.volume}</li>
+                            <li><strong>Volume:</strong> {product.volume}</li> */}
                         </ul>
                     </div>
                 </div>
