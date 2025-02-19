@@ -1,6 +1,7 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import React, { lazy } from "react";
+import React, { lazy, Suspense } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { CartProvider } from "./contexts/cart-context";
 
 // Lazy Loading Components
 const Home = lazy(() => import("./core/public/home"));
@@ -55,13 +56,16 @@ function App() {
 
     const isAdmin = false;
 
-    return (<>
+    return (
         <QueryClientProvider client={queryClient}>
-            <RouterProvider
-                router={createBrowserRouter(isAdmin ? privateRoutes : publicRoutes)} />
+            <CartProvider>
+                <Suspense fallback={<div className="text-center mt-10">Loading...</div>}>
+                    <RouterProvider
+                        router={createBrowserRouter(isAdmin ? privateRoutes : publicRoutes)}
+                    />
+                </Suspense>
+            </CartProvider>
         </QueryClientProvider>
-    </>
-
     );
 }
 
