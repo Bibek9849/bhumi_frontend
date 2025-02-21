@@ -3,54 +3,52 @@ import Footer from "../../components/footer.jsx";
 import Header from "../../components/header.jsx";
 import Navbar from "../../components/navbar.jsx";
 
-
 function Home() {
-
     return (
-
         <div className="bg-white min-h-screen">
-
             <Navbar />
             <Header />
-            <section className="p-8">
-                <h2 className="text-2xl font-bold text-gray-800 text-center mb-6">
-                    Our Products
-                </h2>
 
+            {/* Contact Form Section */}
+            <div className="container mx-auto px-4 py-12">
+                <h2 className="text-3xl font-bold text-center mb-6 text-black">Contact Us</h2>
+                <p className="text-center text-black mb-8">We're here to help</p>
 
-                <div className="flex flex-wrap justify-center space-x-4 space-y-4">
-                    <a href="/product-detail" className="card glass w-96 hover:shadow-xl hover:scale-105 transition-all duration-300">
-                        <figure>
-                            <img
-                                src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
-                                alt="car!" />
-                        </figure>
-                        <div className="card-body">
-                            <h2 className="card-title">Life hack</h2>
-                            <p>How to park your car at your garage?</p>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+                    {/* Call Us */}
+                    <div className="p-6 bg-gray-100 rounded-lg shadow-lg">
+                        <div className="flex justify-center mb-4">
+                            <span className="text-4xl text-black">📞</span>
                         </div>
-                    </a>
+                        <h3 className="text-xl font-semibold text-black">Call Us</h3>
+                        <p className="text-black mt-2">9849943368</p>
+                    </div>
 
-                    <a href="/product-detail" className="card glass w-96 hover:shadow-xl hover:scale-105 transition-all duration-300">
-                        <figure>
-                            <img
-                                src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
-                                alt="car!" />
-                        </figure>
-                        <div className="card-body">
-                            <h2 className="card-title">Life hack</h2>
-                            <p>How to park your car at your garage?</p>
+                    {/* Live Chat */}
+                    <div className="p-6 bg-gray-100 rounded-lg shadow-lg">
+                        <div className="flex justify-center mb-4">
+                            <span className="text-4xl text-black">💬</span>
                         </div>
-                    </a>
+                        <h3 className="text-xl font-semibold text-black">Chat Live</h3>
+                        <p className="text-black">We're available Sun 7:00pm EST - Friday 7:00pm EST</p>
+                        <button className="mt-4 bg-green-600 text-white px-4 py-2 rounded">Chat Now</button>
+                    </div>
 
+                    {/* Email Us */}
+                    <div className="p-6 bg-gray-100 rounded-lg shadow-lg">
+                        <div className="flex justify-center mb-4">
+                            <span className="text-4xl text-black">📧</span>
+                        </div>
+                        <h3 className="text-xl font-semibold text-black">Ask a Question</h3>
+                        <p className="text-black">Fill out our form and we'll get back to you in 24 hours.</p>
+                        <button className="mt-4 bg-green-600 text-white px-4 py-2 rounded">Get Started</button>
+                    </div>
                 </div>
-            </section>
+            </div>
 
             <Footer />
         </div>
-
     );
-
 }
 
 export default Home;
