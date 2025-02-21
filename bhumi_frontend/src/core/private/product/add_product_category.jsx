@@ -6,7 +6,7 @@ import { useClickOutside } from "../../../hooks/use-click-outside.jsx";
 import { Header } from "../../../layouts/admin/header.jsx";
 import { Sidebar } from "../../../layouts/admin/sidebar.jsx";
 import { cn } from "../../../utils/cn.js";
-import { useGetCategoryById, useProductCategory } from "../../public/query.js";
+import { useGetCategoryById, useProductCategory, useUpdateCategory } from "../../public/query.js";
 
 const Layout = () => {
     const isDesktopDevice = useMediaQuery("(min-width: 768px)");
@@ -15,6 +15,7 @@ const Layout = () => {
     const { mutate, isLoading, isError, error } = useProductCategory();
     const { id } = useParams();
     const { data: getById, isLoading: categoryLoading } = useGetCategoryById(id);
+    const updateCategory = useUpdateCategory();
 
     useEffect(() => {
         setCollapsed(!isDesktopDevice);
@@ -29,8 +30,14 @@ const Layout = () => {
     const { register, handleSubmit, formState: { errors }, reset } = useForm({
         defaultValues: getById?.data,
         values: getById?.data,
-        mode: "all" // Set defaultValues only if data is available
+        mode: "all" // Ensuring values are set dynamically
     });
+
+    useEffect(() => {
+        if (getById?.data) {
+            reset(getById?.data);
+        }
+    }, [getById, reset]);
 
     // Handle form submit
     const submit = (data) => {
@@ -40,18 +47,38 @@ const Layout = () => {
         formData.append("name", data?.name);
         formData.append("description", data?.description);
 
-        console.log("Form Data before sending:", Object.fromEntries(formData.entries()));
+        // Check if updating an existing category
+        if (data?._id) {
+            const categoryId = data._id; // Ensure the ID is defined
+            formData.append("id", categoryId);
 
-        mutate(data, {
-            onSuccess: () => {
-                alert("Product category added successfully!");
-                reset(); // Reset form after success
-            },
-            onError: (err) => {
-                console.error("Error adding product category:", err);
-                alert("Failed to add product category.");
-            },
-        });
+            console.log("Updating category with ID:", categoryId);
+
+            updateCategory.mutate({ ...data, id: categoryId }, {
+                onSuccess: (res) => {
+                    console.log("Category updated successfully:", res);
+                    alert("Category updated successfully!");
+                    reset();
+                },
+                onError: (err) => {
+                    console.error("Error updating category:", err);
+                    alert("Failed to update category.");
+                },
+            });
+        } else {
+            // Add new category
+            console.log("Adding new category...");
+            mutate(data, {
+                onSuccess: () => {
+                    alert("Product category added successfully!");
+                    reset(); // Reset form after success
+                },
+                onError: (err) => {
+                    console.error("Error adding product category:", err);
+                    alert("Failed to add product category.");
+                },
+            });
+        }
     };
 
     // Display loading state if data is still being fetched
@@ -72,8 +99,11 @@ const Layout = () => {
                 <Header collapsed={collapsed} setCollapsed={setCollapsed} />
 
                 {/* ✅ Add Product Form */}
-                <div className="p-6 bg-white shadow-md rounded-lg m-4" onSubmit={handleSubmit(submit)}>
-                    <form className="bg-[#747f74] p-6 rounded-lg shadow-xl w-full max-w-md h-[400px] mt-10 shadow-[10px_8px_4px_0px_rgba(255, 253, 231, 0.8)]">
+                <div className="p-6 bg-white shadow-md rounded-lg m-4">
+                    <form
+                        className="bg-[#747f74] p-6 rounded-lg shadow-xl w-full max-w-md h-[400px] mt-10 shadow-[10px_8px_4px_0px_rgba(255, 253, 231, 0.8)]"
+                        onSubmit={handleSubmit(submit)}
+                    >
                         <h1 className="mb-1 text-xl font-bold leading-tight tracking-tight text-white md:text-2xl dark:text-white">
                             Add Product Category
                         </h1>
@@ -116,7 +146,7 @@ const Layout = () => {
                                 className="text-black bg-white hover:bg-white hover:text-black focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-6 py-2.5 text-center border-2 border-transparent hover:border-black"
                                 disabled={isLoading}
                             >
-                                Add
+                                {id ? "Update" : "Add"}
                             </button>
                         </div>
 
