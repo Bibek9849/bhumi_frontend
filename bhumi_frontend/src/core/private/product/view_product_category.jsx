@@ -1,6 +1,6 @@
 import { useMediaQuery } from "@uidotdev/usehooks";
 import { useEffect, useRef, useState } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import { useClickOutside } from "../../../hooks/use-click-outside.jsx";
 import { Header } from "../../../layouts/admin/header.jsx";
 import { Sidebar } from "../../../layouts/admin/sidebar.jsx";
@@ -24,6 +24,7 @@ const ViewCategory = () => {
 
     const { data: categoryList } = useGetCategory();
     const deleteApi = useDeleteCategory();
+    const navigate = useNavigate()
     const deleteItem = (id) => {
         console.log(id)
         deleteApi.mutate(id)
@@ -61,7 +62,7 @@ const ViewCategory = () => {
                                             <td className="border border-gray-300 px-4 py-2">{category.name}</td>
                                             <td className="border border-gray-300 px-4 py-2">{category.description}</td>
                                             <td className="border border-gray-300 px-4 py-2 flex gap-2">
-                                                <button className="bg-blue-500 text-white px-2 py-1 rounded">Edit</button>
+                                                <button onClick={() => navigate("/add-category/" + category._id)} className="bg-blue-500 text-white px-2 py-1 rounded">Edit</button>
                                                 <button onClick={() => deleteItem(category._id)} className="bg-red-500 text-white px-2 py-1 rounded">
                                                     Delete
                                                 </button>
