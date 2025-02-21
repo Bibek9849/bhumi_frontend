@@ -42,6 +42,7 @@ function App() {
         { path: "/view-product", element: <ViewProduct /> },
 
         { path: "/add-category", element: <AddCategory /> },
+        { path: "/add-category/:id", element: <AddCategory /> },
         { path: "/view-category", element: <ViewCategory /> },
 
 
