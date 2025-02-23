@@ -18,8 +18,8 @@ const Login = () => {
                 console.log("Login Response:", res);
 
                 // Store the token and user details
-                localStorage.setItem("token", res.token);
-                localStorage.setItem("user", JSON.stringify(res.user));
+                localStorage.setItem("token", res.data.token);
+                localStorage.setItem("user", JSON.stringify({ fullName: res.data.fullName, email: res.data.email, image: res.data.image, id: res.data.id, contact: res.data.contact }));
 
                 // Redirect to dashboard or homepage
                 console.log(res.data.role)

@@ -22,6 +22,42 @@ export const useLoginUser = () => {
         }
     });
 };
+
+export const useUpdateUser = () => {
+    return useMutation({
+        mutationKey: "Update_User",
+        mutationFn: async (data) => {
+            if (!data.id) {
+                throw new Error("User ID is required for updating profile");
+            }
+
+            console.log("Updating user with ID:", data.id);
+
+            const formData = new FormData();
+            formData.append("fullName", data.fullName);
+            formData.append("contact", data.contact);
+            formData.append("address", data.address);
+
+            if (data.image) {
+                formData.append("profilePicture", data.image);
+            }
+
+            const response = await axios.put(
+                `http://localhost:3000/api/users/${data.id}`,
+                formData,
+                {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem("token")}`,
+                        "Content-Type": "multipart/form-data",
+                    },
+                }
+            );
+
+            return response.data;
+        },
+    });
+};
+
 // =============================== CATEGORY =========================================================
 
 
@@ -79,7 +115,6 @@ export const useDeleteCategory = () => {
     });
 };
 
-
 // ===================================== PRODUCT =========================================================================
 
 
@@ -113,7 +148,6 @@ export const useGetList = () => {
 };
 
 export const useProductGetById = (id) => {
-
     console.log(id)
     return useQuery({
         queryKey: ["GET_PRODUCT_BY_ID", id],
@@ -131,6 +165,19 @@ export const useDeleteProduct = () => {
         }
     });
 };
+export const useUpdateProduct = () => {
+    return useMutation({
+        mutationKey: "Update_Product",
+        mutationFn: (data) => {
+            if (!data.id) {
+                throw new Error("ID is required for updating the product");
+            }
+            console.log("Updating category with ID:", data.id);
+            return axios.put(`http://localhost:3000/api/product/${data.id}`, data);
+        }
+    });
+};
+
 
 // ======================================= ORDER ============================================================
 
@@ -139,7 +186,18 @@ export const useOderUser = () => {
         mutationKey: "Order_User",
         mutationFn: (data) => {
             console.log(data)
-            return axios.post("http://localhost:3000/api/details/save", { data })
+            return axios.post("http://localhost:3000/api/order/", { data })
         }
     });
 };
+
+
+export const fetchOrders = () => {
+    return useQuery({
+        queryKey: "GET_PRODUCT",
+        queryFn: () => {
+            return axios.get("http://localhost:3000/api/details");
+        }
+    });
+};
+

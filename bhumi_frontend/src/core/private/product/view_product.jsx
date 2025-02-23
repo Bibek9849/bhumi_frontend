@@ -1,6 +1,6 @@
 import { useMediaQuery } from "@uidotdev/usehooks";
 import { useEffect, useRef, useState } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom"; // Added useNavigate here
 import { useClickOutside } from "../../../hooks/use-click-outside.jsx";
 import { Header } from "../../../layouts/admin/header.jsx";
 import { Sidebar } from "../../../layouts/admin/sidebar.jsx";
@@ -11,6 +11,7 @@ const ViewProduct = () => {
     const isDesktopDevice = useMediaQuery("(min-width: 768px)");
     const [collapsed, setCollapsed] = useState(!isDesktopDevice);
     const sidebarRef = useRef(null);
+    const navigate = useNavigate(); // Initialize navigate
 
     useEffect(() => {
         setCollapsed(!isDesktopDevice);
@@ -65,7 +66,6 @@ const ViewProduct = () => {
                                     <th className="border border-gray-300 px-4 py-2">Price</th>
                                     <th className="border border-gray-300 px-4 py-2">Description</th>
                                     <th className="border border-gray-300 px-4 py-2">Actions</th>
-
                                 </tr>
                             </thead>
                             <tbody>
@@ -73,14 +73,23 @@ const ViewProduct = () => {
                                     <tr key={product._id} className="hover:bg-gray-100">
                                         <td className="border border-gray-300 px-4 py-2">{index + 1}</td>
                                         <td className="border border-gray-300 px-4 py-2">
-                                            <img src={`http://localhost:3000/product_type_images/${product.image}`} alt={product.name} className="w-16 h-16 object-cover rounded-md" />
+                                            <img
+                                                src={`http://localhost:3000/product_type_images/${product.image}`}
+                                                alt={product.name}
+                                                className="w-16 h-16 object-cover rounded-md"
+                                            />
                                         </td>
                                         <td className="border border-gray-300 px-4 py-2">{product.name}</td>
                                         <td className="border border-gray-300 px-4 py-2">{product.product_categoryId.name}</td>
                                         <td className="border border-gray-300 px-4 py-2">${product.price}</td>
                                         <td className="border border-gray-300 px-4 py-2">{product.description}</td>
                                         <td className="border border-gray-300 px-4 py-2 flex gap-2">
-                                            <button className="bg-blue-500 text-white px-2 py-1 rounded">Edit</button>
+                                            <button
+                                                onClick={() => navigate("/add-product/" + product._id)} // Corrected here
+                                                className="bg-blue-500 text-white px-2 py-1 rounded"
+                                            >
+                                                Edit
+                                            </button>
                                             <button
                                                 onClick={() => deleteItem(product._id)}
                                                 className="bg-red-500 text-white px-2 py-1 rounded"

@@ -20,6 +20,7 @@ const AddProduct = lazy(() => import("./core/private/product/add_product"));
 const AddCategory = lazy(() => import("./core/private/product/add_product_category"));
 const ViewCategory = lazy(() => import("./core/private/product/view_product_category"));
 const ViewProduct = lazy(() => import("./core/private/product/view_product"));
+const Profile = lazy(() => import("./core/public/profile"));
 
 
 
@@ -39,11 +40,12 @@ function App() {
         { path: "/forget-pass", element: <ForgetPassword /> },
         { path: "/cart", element: <Cart /> },
         { path: "/add-product", element: <AddProduct /> },
+        { path: "/add-product/:id", element: <AddProduct /> },
         { path: "/view-product", element: <ViewProduct /> },
-
         { path: "/add-category", element: <AddCategory /> },
         { path: "/add-category/:id", element: <AddCategory /> },
         { path: "/view-category", element: <ViewCategory /> },
+        { path: "/profile", element: <Profile /> },
 
 
         { path: "*", element: <>Unauthorized</> }

@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
     const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
     const [isDarkMode, setIsDarkMode] = useState(false);
+    const navigate = useNavigate();
 
-    // Mock user data (Replace with actual user data from API)
-    const user = {
-        profileImage: null, // Example: "https://example.com/user.jpg" or null if not set
-    };
-
+    // Retrieve the user data from localStorage
+    const userString = localStorage.getItem("user");
+    const user = userString ? JSON.parse(userString) : {};
     const defaultImage = "https://via.placeholder.com/150"; // Default avatar
 
     // Apply the theme based on the state
@@ -27,7 +26,13 @@ const Navbar = () => {
 
     const handleLogoutConfirm = (confirm) => {
         if (confirm) {
-            console.log("Logged out"); // Replace with actual logout logic
+            // Remove user data (and any other data as needed) from localStorage
+            localStorage.clear();
+
+            // Optionally, clear all local storage:
+            // localStorage.clear();
+            // Redirect to the login page
+            navigate("/");
         }
         setShowLogoutConfirm(false);
     };
@@ -84,7 +89,6 @@ const Navbar = () => {
                         checked={isDarkMode}
                         onChange={() => setIsDarkMode(prevState => !prevState)}
                         className="toggle theme-controller bg-base-content col-span-2 col-start-1 row-start-1 dark:bg-base-100" />
-
                     {/* Sun Icon */}
                     <svg className="stroke-base-100 fill-base-100 col-start-1 row-start-1 dark:stroke-base-500 dark:fill-base-500"
                         xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
@@ -111,11 +115,15 @@ const Navbar = () => {
                 <div className="dropdown dropdown-end">
                     <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
                         <div className="w-10 rounded-full">
-                            <img alt="User Avatar" src={user.profileImage ? user.profileImage : defaultImage} />
+                            <img alt={user.fullName} src={user.image ? user.image : defaultImage} />
                         </div>
                     </div>
                     <ul tabIndex={0} className="menu menu-sm dropdown-content bg-white rounded-box z-[1] mt-3 w-52 p-2 shadow">
-                        <li><a className="justify-between">Profile</a></li>
+                        <li>
+                            <Link to="/profile" className="justify-between block">
+                                Profile
+                            </Link>
+                        </li>
                         <li><a>Settings</a></li>
                         <button onClick={handleLogoutClick} className="text-red-500">Logout</button>
                     </ul>
