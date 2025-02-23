@@ -8,7 +8,7 @@ import { useGetList } from "./query";
 
 const Product = () => {
     const { data: productList } = useGetList();
-    console.log(productList);
+    console.log("Product List Data:", productList?.data); // Debugging API response
 
     const [showCategoryDropdown, setShowCategoryDropdown] = useState(false);
     const [selectedCategory, setSelectedCategory] = useState(null);
@@ -20,11 +20,14 @@ const Product = () => {
 
     let timeoutId = null;
 
+    // Handle category selection
     const handleCategoryClick = (category) => {
-        setSelectedCategory(category === selectedCategory ? null : category); // Toggle category selection
+        setSelectedCategory(category === selectedCategory ? null : category); // Toggle selection
         setShowCategoryDropdown(false);
+        console.log("Selected Category:", category); // Debugging
     };
 
+    // Dropdown visibility handlers
     const handleMouseEnter = () => {
         clearTimeout(timeoutId);
         setShowCategoryDropdown(true);
@@ -33,7 +36,7 @@ const Product = () => {
     const handleMouseLeave = () => {
         timeoutId = setTimeout(() => {
             setShowCategoryDropdown(false);
-        }, 200);
+        }, 500); // Slight delay to avoid accidental closing
     };
 
     // Filter products based on selected category
@@ -49,8 +52,7 @@ const Product = () => {
             <div
                 className="w-full h-64 md:h-80 bg-cover bg-center flex justify-center items-center text-white text-3xl font-semibold"
                 style={{ backgroundImage: 'url(/src/assets/hh.jpg)' }}
-            >
-            </div>
+            ></div>
 
             {/* Category & Heading Section */}
             <div className="max-w-7xl mx-auto px-6 py-6">

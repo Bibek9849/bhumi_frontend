@@ -1,6 +1,7 @@
 import { Button, Card } from "flowbite-react";
 import jsPDF from "jspdf";
 import React from "react";
+import avatar from "../../assets/image.png";
 import Footer from "../../components/footer";
 import Navbar from "../../components/navbar";
 import { fetchOrders } from "./query.js";
@@ -70,8 +71,14 @@ const Order = () => {
                 <h2 className="text-2xl font-semibold mb-4">Order History</h2>
 
                 {orders.length === 0 ? (
-                    <p>No orders found.</p>
-                ) : (
+                    <div className="flex flex-col items-center justify-center mt-10">
+                        <img
+                            src={avatar} // Replace with your actual image path
+                            alt="No Orders Found"
+                            className="w-64 h-64 object-contain"
+                        />
+                        <p className="text-gray-500 mt-4 text-lg">No orders found.</p>
+                    </div>) : (
                     orders.map((order, index) => (
                         <Card key={index} className="mb-4">
                             <div className="p-4">
