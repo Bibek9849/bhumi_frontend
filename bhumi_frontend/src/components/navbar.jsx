@@ -3,7 +3,9 @@ import { Link, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
     const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
-    const [isDarkMode, setIsDarkMode] = useState(false);
+    const [isDarkMode, setIsDarkMode] = useState(
+        localStorage.getItem("darkMode") === "enabled"
+    );
     const navigate = useNavigate();
 
     // Retrieve the user data from localStorage
@@ -11,12 +13,14 @@ const Navbar = () => {
     const user = userString ? JSON.parse(userString) : {};
     const defaultImage = "https://via.placeholder.com/150"; // Default avatar
 
-    // Apply the theme based on the state
+    // Apply the theme based on state & store preference
     useEffect(() => {
         if (isDarkMode) {
             document.documentElement.classList.add("dark");
+            localStorage.setItem("darkMode", "enabled");
         } else {
             document.documentElement.classList.remove("dark");
+            localStorage.setItem("darkMode", "disabled");
         }
     }, [isDarkMode]);
 
@@ -26,20 +30,15 @@ const Navbar = () => {
 
     const handleLogoutConfirm = (confirm) => {
         if (confirm) {
-            // Remove user data (and any other data as needed) from localStorage
             localStorage.clear();
-
-            // Optionally, clear all local storage:
-            // localStorage.clear();
-            // Redirect to the login page
             navigate("/");
         }
         setShowLogoutConfirm(false);
     };
 
     return (
-        <div className="navbar bg-green-100">
-            <div className="navbar bg-base-50">
+        <div className="navbar bg-green-100 dark:bg-gray-900 dark:text-white transition-all">
+            <div className="navbar bg-base-50 dark:bg-gray-800">
                 <div className="navbar-start">
                     <div className="dropdown">
                         <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -48,31 +47,33 @@ const Navbar = () => {
                             </svg>
                         </div>
                         <ul tabIndex={0} className="menu menu-sm dropdown-content bg-black rounded-box z-[1] mt-3 w-52 p-2 shadow">
-                            <li><Link to="/home" className="text-white hover:text-black-500">Home</Link></li>
-                            <li><Link to="/product" className="text-white hover:text-black-500">Product</Link></li>
-                            <li><Link to="/order" className="text-white hover:text-black-500">Order</Link></li>
-                            <li><Link to="/about" className="text-white hover:text-black-500">About Us</Link></li>
+                            <li><Link to="/home" className="text-white hover:text-gray-300">Home</Link></li>
+                            <li><Link to="/product" className="text-white hover:text-gray-300">Product</Link></li>
+                            <li><Link to="/order" className="text-white hover:text-gray-300">Order</Link></li>
+                            <li><Link to="/about" className="text-white hover:text-gray-300">About Us</Link></li>
                         </ul>
                     </div>
                     <a className="btn btn-ghost text-xl">
-                        <Link to="/home" className="text-green-600 hover:text-green-500">Bhumi</Link>
+                        <Link to="/home" className="text-green-600 dark:text-green-400 hover:text-green-500">
+                            Bhumi
+                        </Link>
                     </a>
                 </div>
                 <div className="navbar-center hidden lg:flex">
                     <ul className="menu menu-horizontal px-1">
-                        <li><Link to="/home" className="text-black hover:text-black-500">Home</Link></li>
-                        <li><Link to="/product" className="text-black hover:text-black-500">Product</Link></li>
-                        <li><Link to="/order" className="text-black hover:text-black-500">Order</Link></li>
-                        <li><Link to="/about" className="text-black hover:text-black-500">About Us</Link></li>
+                        <li><Link to="/home" className="text-black dark:text-white hover:text-gray-600">Home</Link></li>
+                        <li><Link to="/product" className="text-black dark:text-white hover:text-gray-600">Product</Link></li>
+                        <li><Link to="/order" className="text-black dark:text-white hover:text-gray-600">Order</Link></li>
+                        <li><Link to="/about" className="text-black dark:text-white hover:text-gray-600">About Us</Link></li>
                     </ul>
                 </div>
             </div>
 
-            {/* Confirmation Modal */}
+            {/* Logout Confirmation Modal */}
             {showLogoutConfirm && (
                 <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-50">
-                    <div className="bg-white p-6 rounded-lg shadow-lg">
-                        <h3 className="text-xl mb-4">Are you sure you want to logout?</h3>
+                    <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
+                        <h3 className="text-xl mb-4 dark:text-white">Are you sure you want to logout?</h3>
                         <div className="flex justify-between">
                             <button className="btn btn-secondary" onClick={() => handleLogoutConfirm(true)}>Yes</button>
                             <button className="btn btn-primary" onClick={() => handleLogoutConfirm(false)}>No</button>
@@ -82,16 +83,15 @@ const Navbar = () => {
             )}
 
             <div className="flex-none gap-2">
-                {/* Theme Toggle */}
+                {/* Theme Toggle Button */}
                 <label className="grid cursor-pointer place-items-center">
                     <input
                         type="checkbox"
                         checked={isDarkMode}
                         onChange={() => setIsDarkMode(prevState => !prevState)}
-                        className="toggle theme-controller bg-base-content col-span-2 col-start-1 row-start-1 dark:bg-base-100" />
-                    {/* Sun Icon */}
-                    <svg className="stroke-base-100 fill-base-100 col-start-1 row-start-1 dark:stroke-base-500 dark:fill-base-500"
-                        xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+                        className="toggle theme-controller bg-base-content col-span-2 col-start-1 row-start-1 dark:bg-gray-700"
+                    />
+                    <svg className="stroke-current dark:text-white text-gray-800 col-start-1 row-start-1" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
                         fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <circle cx="12" cy="12" r="5" />
                         <path d="M12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4" />
@@ -115,17 +115,18 @@ const Navbar = () => {
                 <div className="dropdown dropdown-end">
                     <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
                         <div className="w-10 rounded-full">
-                            <img alt={user.fullName} src={user.image ? user.image : defaultImage} />
+                            <img alt="Tailwind CSS Navbar component"
+                                src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
                         </div>
                     </div>
-                    <ul tabIndex={0} className="menu menu-sm dropdown-content bg-white rounded-box z-[1] mt-3 w-52 p-2 shadow">
+                    <ul tabIndex={0} className="menu menu-sm dropdown-content bg-white dark:bg-gray-800 rounded-box z-[1] mt-3 w-52 p-2 shadow">
                         <li>
-                            <Link to="/profile" className="justify-between block">
+                            <Link to="/profile" className="justify-between block dark:text-white">
                                 Profile
                             </Link>
                         </li>
-                        <li><a>Settings</a></li>
-                        <button onClick={handleLogoutClick} className="text-red-500">Logout</button>
+                        <li><a className="dark:text-white">Settings</a></li>
+                        <button onClick={handleLogoutClick} className="text-red-500 dark:text-red-400">Logout</button>
                     </ul>
                 </div>
             </div>

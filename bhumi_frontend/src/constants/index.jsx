@@ -1,4 +1,4 @@
-import { ChartColumn, Edit, Home, NotepadText, Package, PackagePlus, Settings, Star, Trash } from "lucide-react";
+import { Edit, Home, Package, PackagePlus, Settings, Star, Trash } from "lucide-react";
 
 import { default as ProductImage, default as ProfileImage } from "../assets/logo.png";
 
@@ -9,18 +9,9 @@ export const navbarLinks = [
             {
                 label: "Dashboard",
                 icon: Home,
-                path: "/home",
+                path: "/admin",
             },
-            {
-                label: "Analytics",
-                icon: ChartColumn,
-                path: "/analytics",
-            },
-            {
-                label: "Reports",
-                icon: NotepadText,
-                path: "/reports",
-            },
+
         ],
     },
     {
@@ -76,7 +67,7 @@ export const navbarLinks = [
             {
                 label: "Order",
                 icon: Package,
-                path: "/order",
+                path: "/oderDetails",
             },
         ],
     },

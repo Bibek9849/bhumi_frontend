@@ -21,6 +21,7 @@ const AddCategory = lazy(() => import("./core/private/product/add_product_catego
 const ViewCategory = lazy(() => import("./core/private/product/view_product_category"));
 const ViewProduct = lazy(() => import("./core/private/product/view_product"));
 const Profile = lazy(() => import("./core/public/profile"));
+const OderDetails = lazy(() => import("./core/private/product/view_order"));
 
 
 
@@ -46,6 +47,7 @@ function App() {
         { path: "/add-category/:id", element: <AddCategory /> },
         { path: "/view-category", element: <ViewCategory /> },
         { path: "/profile", element: <Profile /> },
+        { path: "/oderDetails", element: <OderDetails /> },
 
 
         { path: "*", element: <>Unauthorized</> }

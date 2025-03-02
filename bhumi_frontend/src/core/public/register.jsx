@@ -88,7 +88,7 @@ const Register = () => {
                                 type="contact"
                                 id="contact"
                                 className="shadow-sm bg-gray-50 border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                                placeholder="name@gmail.com"
+                                placeholder="9807654321"
                                 {...register("contact", { required: "Contact is required" })} />
                         </div>
                         <div className="mb-4">
