@@ -14,7 +14,7 @@ test.describe('Login & Register Page Tests', () => {
 
     // Test error message on failed login
     test('should display error message when login fails', async ({ page }) => {
-        await page.route('**/api/user/login', route =>
+        await page.route('**/api/user/', route =>
             route.fulfill({
                 status: 400,
                 body: JSON.stringify({ message: 'Invalid credentials' })
@@ -104,6 +104,18 @@ test.describe('Login & Register Page Tests', () => {
     });
 
     // Test successful registration
+
+
+    // Test validation errors on registration page
+    test('should show validation errors on registration page', async ({ page }) => {
+        await page.goto('http://localhost:5173/register');
+        await page.click('button:has-text("Register")');
+
+        await expect(page.locator('text=Full Name is required')).toBeVisible();
+        await expect(page.locator('text=Email is required')).toBeVisible();
+        await expect(page.locator('text=Password is required')).toBeVisible();
+    });
+
     test('should register a user and redirect', async ({ page }) => {
         await page.route('**/api/user/register', route =>
             route.fulfill({
@@ -121,15 +133,5 @@ test.describe('Login & Register Page Tests', () => {
         await page.click('button:has-text("Register")');
 
         await expect(page.locator('text=Registration successful!')).toBeVisible();
-    });
-
-    // Test validation errors on registration page
-    test('should show validation errors on registration page', async ({ page }) => {
-        await page.goto('http://localhost:5173/register');
-        await page.click('button:has-text("Register")');
-
-        await expect(page.locator('text=Full Name is required')).toBeVisible();
-        await expect(page.locator('text=Email is required')).toBeVisible();
-        await expect(page.locator('text=Password is required')).toBeVisible();
     });
 });
