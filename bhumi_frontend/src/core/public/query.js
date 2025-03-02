@@ -24,39 +24,29 @@ export const useLoginUser = () => {
 };
 
 export const useUpdateUser = () => {
-    return useMutation({
-        mutationKey: "Update_User",
-        mutationFn: async (data) => {
-            if (!data.id) {
-                throw new Error("User ID is required for updating profile");
+    return useMutation(async (userData) => {
+        const formData = new FormData();
+
+        // Append form fields
+        for (const key in userData) {
+            if (userData[key] !== null) {
+                formData.append(key, userData[key]);
             }
+        }
 
-            console.log("Updating user with ID:", data.id);
+        const token = localStorage.getItem("token");
 
-            const formData = new FormData();
-            formData.append("fullName", data.fullName);
-            formData.append("contact", data.contact);
-            formData.append("address", data.address);
+        const response = await axios.put(`/api/users/updateUser/${userData.id}`, formData, {
+            headers: {
+                "Content-Type": "multipart/form-data",
+                Authorization: `Bearer ${token}`, // Include the token
+            },
+        });
 
-            if (data.image) {
-                formData.append("profilePicture", data.image);
-            }
-
-            const response = await axios.put(
-                `http://localhost:3000/api/users/${data.id}`,
-                formData,
-                {
-                    headers: {
-                        Authorization: `Bearer ${localStorage.getItem("token")}`,
-                        "Content-Type": "multipart/form-data",
-                    },
-                }
-            );
-
-            return response.data;
-        },
+        return response.data;
     });
 };
+
 
 // =============================== CATEGORY =========================================================
 
@@ -201,3 +191,10 @@ export const fetchOrders = () => {
     });
 };
 
+// Forgot Password
+export const useForgotPassword = () => {
+    return useMutation({
+        mutationKey: "Forgot_Password",
+        mutationFn: (email) => axios.post("http://localhost:3000/api/users/forgot-password", { email }),
+    });
+};

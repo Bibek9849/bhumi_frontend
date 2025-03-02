@@ -194,6 +194,7 @@ const Layout = () => {
                 <div className="h-[calc(100vh-60px)] overflow-y-auto overflow-x-hidden p-6">
                     <Outlet />
                 </div>
+
             </div>
         </div>
     );

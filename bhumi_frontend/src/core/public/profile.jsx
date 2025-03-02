@@ -1,27 +1,31 @@
+import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
-import { useUpdateUser } from "./query"; // Import mutation hook
+import { useUpdateUser } from "./query";
 
 export default function UpdateProfile() {
     const userString = localStorage.getItem("user");
     const user = userString ? JSON.parse(userString) : {};
+
     const [formData, setFormData] = useState({
-        fullName: user.fullName || "",
-        email: user.email || "",
-        contact: user.contact || "",
-        address: user.address || "",
+        fullName: "",
+        email: "",
+        contact: "",
+        address: "",
         image: null,
-        imageUrl: user.image || "https://via.placeholder.com/150",
+        imageUrl: "https://via.placeholder.com/150",
     });
 
     useEffect(() => {
-        setFormData((prev) => ({
-            ...prev,
-            fullName: user.fullName || "",
-            email: user.email || "",
-            contact: user.contact || "",
-            address: user.address || "",
-            imageUrl: user.image || "https://via.placeholder.com/150",
-        }));
+        if (user) {
+            setFormData((prev) => ({
+                ...prev,
+                fullName: user.fullName || "",
+                email: user.email || "",
+                contact: user.contact || "",
+                address: user.address || "",
+                imageUrl: user.image || "https://via.placeholder.com/150",
+            }));
+        }
     }, [userString]);
 
     const updateUser = useUpdateUser();
@@ -42,8 +46,17 @@ export default function UpdateProfile() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        const updatedData = new FormData();
+        updatedData.append("fullName", formData.fullName);
+        updatedData.append("email", formData.email);
+        updatedData.append("contact", formData.contact);
+        updatedData.append("address", formData.address);
+        if (formData.image) {
+            updatedData.append("image", formData.image);
+        }
+
         updateUser.mutate(
-            { ...formData, id: user._id },
+            { updatedData, id: user._id },
             {
                 onSuccess: (data) => {
                     alert("Profile updated successfully!");
@@ -59,104 +72,66 @@ export default function UpdateProfile() {
     };
 
     return (
-        <div className="bg-gray-100 min-h-screen flex items-center justify-center p-4">
-            <div className="container mx-auto">
-                <div className="flex flex-col lg:flex-row gap-8">
-                    <div className="w-full lg:w-1/3 bg-white rounded-md shadow p-6">
-                        <div className="flex flex-col items-center">
-                            <div className="w-28 h-28 mb-4">
-                                <img
-                                    src={formData.imageUrl}
-                                    alt="Profile"
-                                    className="rounded-full w-full h-full object-cover"
-                                />
-                            </div>
-                            <h2 className="text-xl font-semibold">
-                                {formData.fullName || "Full Name"}
-                            </h2>
-                            <p className="text-sm text-gray-500">
-                                {formData.email || "Email Address"}
-                            </p>
-                        </div>
+        <div className="bg-gray-50 min-h-screen flex items-center justify-center p-6">
+            <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+                className="w-full max-w-4xl bg-white shadow-lg rounded-xl p-8 flex flex-col md:flex-row gap-8"
+            >
+                {/* Profile Picture Section */}
+                <div className="w-full md:w-1/3 flex flex-col items-center">
+                    <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-indigo-500 shadow-md">
+                        <img src="/assets/logo.png" alt="Logo" className="w-full h-full object-cover" />
                     </div>
-
-                    <div className="w-full lg:w-2/3 bg-white rounded-md shadow p-6">
-                        <h2 className="text-2xl font-bold mb-4 text-gray-700">
-                            Update Profile
-                        </h2>
-                        <form onSubmit={handleSubmit}>
-                            <div className="mb-4">
-                                <label htmlFor="fullName" className="block text-gray-700 mb-1">
-                                    Full Name
-                                </label>
-                                <input
-                                    type="text"
-                                    id="fullName"
-                                    name="fullName"
-                                    value={formData.fullName}
-                                    onChange={handleChange}
-                                    className="w-full border border-gray-300 rounded px-3 py-2"
-                                    placeholder="Enter full name"
-                                    required
-                                />
-                            </div>
-
-                            <div className="mb-4">
-                                <label htmlFor="contact" className="block text-gray-700 mb-1">
-                                    Contact
-                                </label>
-                                <input
-                                    type="text"
-                                    id="contact"
-                                    name="contact"
-                                    value={formData.contact}
-                                    onChange={handleChange}
-                                    className="w-full border border-gray-300 rounded px-3 py-2"
-                                    placeholder="Enter phone number"
-                                />
-                            </div>
-
-                            <div className="mb-4">
-                                <label htmlFor="image" className="block text-gray-700 mb-1">
-                                    Profile Image
-                                </label>
-                                <input
-                                    type="file"
-                                    id="image"
-                                    name="image"
-                                    accept="image/*"
-                                    onChange={handleChange}
-                                    className="w-full"
-                                />
-                            </div>
-
-                            <div className="mb-4">
-                                <label htmlFor="address" className="block text-gray-700 mb-1">
-                                    Address
-                                </label>
-                                <input
-                                    type="text"
-                                    id="address"
-                                    name="address"
-                                    value={formData.address}
-                                    onChange={handleChange}
-                                    className="w-full border border-gray-300 rounded px-3 py-2"
-                                    placeholder="Enter address"
-                                    required
-                                />
-                            </div>
-
-                            <button
-                                type="submit"
-                                disabled={updateUser.isLoading}
-                                className="bg-indigo-600 text-white px-4 py-2 rounded-md"
-                            >
-                                {updateUser.isLoading ? "Updating..." : "Update Profile"}
-                            </button>
-                        </form>
-                    </div>
+                    <h2 className="mt-4 text-xl font-semibold text-gray-800">{formData.fullName || "Your Name"}</h2>
+                    <p className="text-gray-500">{formData.email || "Your Email"}</p>
                 </div>
-            </div>
+
+                {/* Profile Form Section */}
+                <div className="w-full md:w-2/3">
+                    <h2 className="text-2xl font-bold text-gray-700 mb-4">Update Profile</h2>
+                    <form onSubmit={handleSubmit} className="space-y-4">
+                        <div>
+                            <label className="text-gray-700 font-medium">Full Name</label>
+                            <input
+                                type="text" name="fullName" value={formData.fullName}
+                                onChange={handleChange} required
+                                className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                            />
+                        </div>
+                        <div>
+                            <label className="text-gray-700 font-medium">Contact</label>
+                            <input
+                                type="text" name="contact" value={formData.contact}
+                                onChange={handleChange}
+                                className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                            />
+                        </div>
+                        <div>
+                            <label className="text-gray-700 font-medium">Profile Image</label>
+                            <input type="file" name="image" accept="image/*" onChange={handleChange}
+                                className="w-full border p-2 rounded-md"
+                            />
+                        </div>
+                        <div>
+                            <label className="text-gray-700 font-medium">Address</label>
+                            <input
+                                type="text" name="address" value={formData.address}
+                                onChange={handleChange} required
+                                className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                            />
+                        </div>
+                        <motion.button
+                            type="submit" disabled={updateUser.isLoading}
+                            whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
+                            className="w-full bg-indigo-600 text-white py-2 rounded-md font-semibold shadow-md hover:bg-indigo-700 transition"
+                        >
+                            {updateUser.isLoading ? "Updating..." : "Update Profile"}
+                        </motion.button>
+                    </form>
+                </div>
+            </motion.div>
         </div>
     );
 }

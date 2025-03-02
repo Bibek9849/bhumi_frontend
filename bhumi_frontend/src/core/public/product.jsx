@@ -45,7 +45,7 @@ const Product = () => {
         : productList?.data;
 
     return (
-        <div className="bg-gray-100 min-h-screen flex flex-col">
+        <div className="bg-gray-100 dark:bg-gray-900 dark:text-white min-h-screen flex flex-col transition-all">
             <Navbar />
 
             {/* Hero Section */}
@@ -59,15 +59,15 @@ const Product = () => {
                 <div className="flex flex-col md:flex-row items-start gap-4">
                     {/* Category Dropdown */}
                     <div className="relative" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-                        <button className="flex items-center gap-2 text-lg font-semibold bg-white shadow-md px-4 py-2 rounded-md border border-black text-black">
+                        <button className="flex items-center gap-2 text-lg font-semibold bg-white dark:bg-gray-800 dark:text-white shadow-md px-4 py-2 rounded-md border border-black dark:border-gray-600">
                             {selectedCategory ? selectedCategory : 'Select Category'}
                             <FontAwesomeIcon className={showCategoryDropdown ? "rotate-180 transition-transform" : "transition-transform"} icon={faCircleArrowDown} />
                         </button>
                         {showCategoryDropdown && categories.length > 0 && (
-                            <ul className="absolute left-0 top-full bg-white shadow-lg rounded-md w-48 mt-2 p-2 border border-black z-10">
+                            <ul className="absolute left-0 top-full bg-white dark:bg-gray-800 shadow-lg rounded-md w-48 mt-2 p-2 border border-black dark:border-gray-600 z-10">
                                 {categories.map((category, index) => (
-                                    <li key={index} className="py-2 px-4 hover:bg-gray-200 rounded">
-                                        <button className="block w-full text-left text-black" onClick={() => handleCategoryClick(category)}>
+                                    <li key={index} className="py-2 px-4 hover:bg-gray-200 dark:hover:bg-gray-700 rounded">
+                                        <button className="block w-full text-left text-black dark:text-white" onClick={() => handleCategoryClick(category)}>
                                             {category}
                                         </button>
                                     </li>
@@ -77,7 +77,7 @@ const Product = () => {
                     </div>
 
                     {/* Heading */}
-                    <h1 className="text-3xl font-semibold text-black w-full md:w-auto">Our Products</h1>
+                    <h1 className="text-3xl font-semibold text-black dark:text-white w-full md:w-auto">Our Products</h1>
                 </div>
             </div>
 
@@ -88,7 +88,7 @@ const Product = () => {
                         <Link
                             key={product._id}
                             to={`/product-detail/${product._id}`}
-                            className="bg-white shadow-md border border-gray-200 rounded-lg overflow-hidden hover:shadow-xl hover:scale-105 transition-all duration-300"
+                            className="bg-white dark:bg-gray-800 shadow-md border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden hover:shadow-xl hover:scale-105 transition-all duration-300"
                         >
                             <img
                                 src={`http://localhost:3000/product_type_images/${product.image}`}
@@ -96,8 +96,8 @@ const Product = () => {
                                 className="w-full h-52 object-cover"
                             />
                             <div className="p-4">
-                                <h2 className="text-lg font-semibold text-gray-900">{product.name}</h2>
-                                <p className="text-gray-600 text-sm mt-1">
+                                <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{product.name}</h2>
+                                <p className="text-gray-600 dark:text-gray-300 text-sm mt-1">
                                     {product.product_categoryId?.description || "No description available"}
                                 </p>
                             </div>
